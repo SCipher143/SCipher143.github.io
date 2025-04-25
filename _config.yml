@@ -14,6 +14,8 @@ timezone: Pacific Time
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
+favicon: /assets/img/favicon.svg
+
 title: Tech Work # the main title
 
 tagline: A blog about tech, life, and everything in between. | Striving Tech Wizard # it will display as the subtitle
@@ -89,8 +91,6 @@ pageviews:
 #     dark — Use the dark color scheme
 #
 theme_mode: # [light | dark]
-
-favicon: /assets/img/favicon.svg
 
 # The CDN endpoint for media resources.
 # Notice that once it is assigned, the CDN url
