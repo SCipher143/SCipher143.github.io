@@ -14,7 +14,7 @@ timezone: Pacific Time
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-favicon: /assets/img/favicon.svg
+favicon: /assets/img/favicons/favicon.ico
 
 title: Tech Work # the main title
 
