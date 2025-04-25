@@ -8,12 +8,11 @@ order: 4
 
 I'm Spencer (aka SCipher), a techie and full time tinkerer at heart. I'm trying my hand at sharing my own tech journey through this site. I enjoy the ever-changing way technology can be used both personally and professionally to enhance our lives.
 
-I have been following a number of people, groups and organisations across social platforms for years that have inspired my own growth and want this site to be a way of paying it forward. I am a strong believe in sharing my learnings with others in my team, customers, and industry peers as it helps drive collective growth, and hope this will provide another outlet to continue that growth both personally and collectively with you all.
+Over the years, I’ve followed a wide range of individuals, communities, and organizations across social platforms that have played a big role in shaping my own development. This site is my way of giving back. I truly believe in the power of sharing knowledge—whether it’s with my team, clients, or others in the industry—because it helps us all grow together. My hope is that this becomes a space for ongoing learning and mutual growth, both for myself and for anyone who connects with it.
 
 The following is just some of the wide range of topics I hope to discuss and cover.
 
-* Smart home tech and gadgets
-* Home Automation
+* Try Hack me and other Hacking challenges that I learn from.
 * HomeLab
 * DevOps
 * Artificial Intelligence
