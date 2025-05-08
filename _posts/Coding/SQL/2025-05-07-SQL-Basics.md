@@ -62,3 +62,13 @@ Some of The Most Important SQL Commands
 ![Desktop View](/assets/img/SQL/SQL-2.png){: width="700" height="400" }
 
 #### SQL Exercise 2 Queries with Constraints 
+
+Select query with constraints
+SELECT column, another_column, …
+FROM mytable
+WHERE condition
+    AND/OR another_condition
+    AND/OR …;
+
+![Desktop View](/assets/img/SQL/SQL-3.png){: width="700" height="400" }
+
