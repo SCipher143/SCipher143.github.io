@@ -57,8 +57,8 @@ Some of The Most Important SQL Commands
 
 #### SQL Exercise 1 Select statement
 
-![Desktop View](/assets/img/Coding/SQL/SQL-1.png){: width="700" height="400" }
+![Desktop View](/assets/img/SQL/SQL-1.png){: width="700" height="400" }
 
-![Desktop View](/assets/img/Coding/SQL/SQL-2.png){: width="700" height="400" }
+![Desktop View](/assets/img/SQL/SQL-2.png){: width="700" height="400" }
 
 #### SQL Exercise 2 Queries with Constraints 
