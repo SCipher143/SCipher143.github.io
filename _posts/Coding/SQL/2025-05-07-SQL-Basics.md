@@ -8,15 +8,15 @@ description: Learning SQL Basics
 ---
 ## SQL Intro 
 
-SQL: Structured Query Language
+**SQL: Structured Query Language**
 Lets you access and maniputalte databases
 
 To build a web site that shows data from a database, you will need:
 
 An RDBMS database program (i.e. MS Access, SQL Server, MySQL)
-To use a server-side scripting language, like PHP or ASP
-To use SQL to get the data you want
-To use HTML / CSS to style the page
+Use a server-side scripting language, like PHP or ASP
+Use SQL to get the data you want
+Use HTML / CSS to style the page
 
 RDBMS: Relational Database Management System
 RDBMS is the basis for SQL, and for all modern database systems such as MS SQL Server, IBM DB2, Oracle, MySQL, and Microsoft Access.
@@ -71,4 +71,29 @@ WHERE condition
     AND/OR …;
 
 ![Desktop View](/assets/img/SQL/SQL-3.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-4.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-5.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-6.png){: width="700" height="400" }
+
+#### SQL Exercise 4 Filtering and sorting Query results
+
+SQL offers a straightforward method to eliminate rows with duplicate values in a specific column by using the DISTINCT keyword.
+
+SQL allows you to organize query results by a specified column in either ascending or descending order using the ORDER BY clause.
+
+Another commonly used set of clauses with ORDER BY are LIMIT and OFFSET, which help optimize queries by telling the database exactly which portion of the results you're interested in.
+The LIMIT clause restricts the number of rows returned, while the optional OFFSET clause defines the starting point from which rows are counted.
+
+![Desktop View](/assets/img/SQL/SQL-7.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-8.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-9.png){: width="700" height="400" }
+
+**More Practice**
+
+![Desktop View](/assets/img/SQL/SQL-10.png){: width="700" height="400" }
 
