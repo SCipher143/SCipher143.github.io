@@ -57,9 +57,9 @@ Some of The Most Important SQL Commands
 
 #### SQL Exercise 1 Select statement
 
-![Desktop View]({{ "/assets/img/SQL/SQL-1.png" | relative_url }}){: width="700" height="400" }
+![Desktop View](/assets/img/SQL/SQL-1.png){: width="700" height="400" }
 
-![Desktop View]({{ "/assets/img/SQL/SQL-2.png" | relative_url }}){: width="700" height="400" }
+![Desktop View](/assets/img/SQL/SQL-2.png){: width="700" height="400" }
 
 #### SQL Exercise 2 Queries with Constraints 
 
@@ -70,6 +70,6 @@ WHERE condition
     AND/OR another_condition
     AND/OR …;
 
-![Desktop View]({{ "/assets/img/SQL/SQL-3.png" | relative_url }}){: width="700" height="400" }
+![Desktop View](/assets/img/SQL/SQL-3.png){: width="700" height="400" }
 
 ![Desktop View](/assets/img/SQL/SQL-4.png){: width="700" height="400" }
