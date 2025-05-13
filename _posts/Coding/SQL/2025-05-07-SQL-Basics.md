@@ -72,4 +72,3 @@ WHERE condition
 
 ![Desktop View](/assets/img/SQL/SQL-3.png){: width="700" height="400" }
 
-![Desktop View](/assets/img/SQL/SQL-4.png){: width="700" height="400" }
