@@ -144,4 +144,24 @@ In many SQL queries, you’ll notice that INNER JOIN is often shortened to just 
 
 ![Desktop View](/assets/img/SQL/SQL-16.png){: width="700" height="400" }
 
-### SQL Exercise 6 Multi-table queries with JOINs
+### SQL Exercise 6 OUTER JOINs
+
+The INNER JOIN we used previously may not always be the best choice, especially if your analysis requires data that isn't shared between both tables. This is because an INNER JOIN only includes records that exist in both tables.
+
+In cases where the data is unbalanced—for instance, when entries are added at different times or in different stages—you may need to use a LEFT JOIN, RIGHT JOIN, or FULL JOIN instead. These types of joins help ensure that important information isn't excluded from your query results.
+
+```text
+SELECT column, another_column, …
+FROM mytable
+INNER/LEFT/RIGHT/FULL JOIN another_table 
+    ON mytable.id = another_table.matching_id
+WHERE condition(s)
+ORDER BY column, … ASC/DESC
+LIMIT num_limit OFFSET num_offset;
+```
+
+Just like with an INNER JOIN, these three additional types of joins also require you to define the column used to connect the tables.
+
+When performing a LEFT JOIN from table A to table B, all rows from table A are retained—even if there's no corresponding match in table B. A RIGHT JOIN works in the opposite direction, keeping all rows from table B regardless of matches in table A. A FULL JOIN includes all rows from both tables, whether or not a match exists in the other table.
+
+Because these joins can produce unmatched rows, you’ll often need to handle NULL values in your query results and account for any related constraints or logic.
