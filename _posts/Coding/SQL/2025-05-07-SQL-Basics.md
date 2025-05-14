@@ -165,3 +165,7 @@ Just like with an INNER JOIN, these three additional types of joins also require
 When performing a LEFT JOIN from table A to table B, all rows from table A are retained—even if there's no corresponding match in table B. A RIGHT JOIN works in the opposite direction, keeping all rows from table B regardless of matches in table A. A FULL JOIN includes all rows from both tables, whether or not a match exists in the other table.
 
 Because these joins can produce unmatched rows, you’ll often need to handle NULL values in your query results and account for any related constraints or logic.
+
+![Desktop View](/assets/img/SQL/SQL-17.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-18.png){: width="700" height="400" }
