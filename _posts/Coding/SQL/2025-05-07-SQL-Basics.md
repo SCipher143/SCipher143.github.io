@@ -55,20 +55,22 @@ Some of The Most Important SQL Commands
 
 - **DROP INDEX** - deletes an index
 
-#### SQL Exercise 1 Select statement
+### SQL Exercise 1 Select statement
 
 ![Desktop View](/assets/img/SQL/SQL-1.png){: width="700" height="400" }
 
 ![Desktop View](/assets/img/SQL/SQL-2.png){: width="700" height="400" }
 
-#### SQL Exercise 2 Queries with Constraints 
+### SQL Exercise 2 Queries with Constraints 
 
+```text
 Select query with constraints
 SELECT column, another_column, …
 FROM mytable
 WHERE condition
     AND/OR another_condition
     AND/OR …;
+```
 
 ![Desktop View](/assets/img/SQL/SQL-3.png){: width="700" height="400" }
 
@@ -78,7 +80,7 @@ WHERE condition
 
 ![Desktop View](/assets/img/SQL/SQL-6.png){: width="700" height="400" }
 
-#### SQL Exercise 4 Filtering and sorting Query results
+### SQL Exercise 4 Filtering and sorting Query results
 
 SQL offers a straightforward method to eliminate rows with duplicate values in a specific column by using the DISTINCT keyword.
 
@@ -97,3 +99,49 @@ The LIMIT clause restricts the number of rows returned, while the optional OFFSE
 
 ![Desktop View](/assets/img/SQL/SQL-10.png){: width="700" height="400" }
 
+![Desktop View](/assets/img/SQL/SQL-11.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-12.png){: width="700" height="400" }
+
+### SQL Exercise 5 Multi-table queries with JOINs
+
+In real-world scenarios, information about an entity is typically divided and stored across several related tables—a method referred to as normalization.
+
+**Understanding Database Normalization**
+
+Normalization is beneficial because it reduces redundancy within any given table and enables various parts of the database to expand independently (for example, new engine types can be added without altering the car models table). However, this separation of data means that querying becomes more complex, and performance can be impacted when dealing with numerous large tables.
+
+To retrieve complete information about an entity whose data is distributed across multiple normalized tables, it’s necessary to construct queries that can merge this data effectively.
+
+**Working with JOINs in Multi-Table Queries**
+
+When different tables store data about the same entity, they must include a primary key that uniquely identifies that entity across the database. This key is often an auto-incrementing number for efficiency, but it could also be a unique string or hash.
+
+To combine data from multiple tables, SQL provides the JOIN clause. One common type is the INNER JOIN, which merges rows from two tables based on a shared key, allowing for the retrieval of related data from both tables.
+
+```text
+SELECT column, another_table_column, …
+FROM mytable
+INNER JOIN another_table 
+    ON mytable.id = another_table.id
+WHERE condition(s)
+ORDER BY column, … ASC/DESC
+LIMIT num_limit OFFSET num_offset;
+```
+
+**Understanding INNER JOIN**
+
+An INNER JOIN combines rows from two tables based on a matching value in a specified column (as indicated by the ON condition). When a match is found, a new row is created in the result set that includes columns from both tables. Once the join is completed, any additional clauses—such as WHERE, ORDER BY, or GROUP BY—are applied to filter or sort the results.
+
+In many SQL queries, you’ll notice that INNER JOIN is often shortened to just JOIN—they function the same way.
+
+![Desktop View](/assets/img/SQL/SQL-13.png){: width="700" height="400" }
+**This will be the 2 tables I will be working with based off of Pixar Movies and their Box Ofiice**
+
+![Desktop View](/assets/img/SQL/SQL-14.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-15.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-16.png){: width="700" height="400" }
+
+### SQL Exercise 6 Multi-table queries with JOINs
