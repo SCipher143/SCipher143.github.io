@@ -169,3 +169,95 @@ Because these joins can produce unmatched rows, you’ll often need to handle NU
 ![Desktop View](/assets/img/SQL/SQL-17.png){: width="700" height="400" }
 
 ![Desktop View](/assets/img/SQL/SQL-18.png){: width="700" height="400" }
+
+### SQL Exercise 7 NULLs
+
+Sometimes, it's also not possible to avoid NULL values. In these cases, you can test a column for NULL values in a WHERE clause by using either the IS NULL or IS NOT NULL constraint.
+
+```text
+SELECT column, another_column, …
+FROM mytable
+WHERE column IS/IS NOT NULL
+AND/OR another_condition
+AND/OR …;
+```
+
+![Desktop View](/assets/img/SQL/SQL-19.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-20.png){: width="700" height="400" }
+
+### SQL Exercise 8 Queries with expressions 
+
+Besides selecting raw column data in SQL queries, you can also apply expressions to perform more advanced operations on that data. These expressions can include arithmetic calculations, string manipulation, and built-in functions, allowing you to modify or compute values dynamically as the query runs.
+
+```text
+SELECT particle_speed / 2.0 AS half_particle_speed
+FROM physics_data
+WHERE ABS(particle_position) * 10.0 > 500;
+```
+
+Using expressions in SQL can help reduce the need for additional processing after retrieving the data, making your workflow more efficient. However, complex expressions can impact readability, so it's a good practice to assign them clear and descriptive aliases using the AS keyword when writing them in the SELECT clause.
+
+```text
+SELECT col_expression AS expr_description, …
+FROM mytable;
+```
+
+In addition to expressions, regular columns and even tables can also have aliases to make them easier to reference in the output and as a part of simplifying more complex queries.
+
+```text
+SELECT column AS better_column_name, …
+FROM a_long_widgets_table_name AS mywidgets
+INNER JOIN widget_sales
+  ON mywidgets.id = widget_sales.widget_id;
+```
+
+![Desktop View](/assets/img/SQL/SQL-21.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-22.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-23.png){: width="700" height="400" }
+
+### SQL Exercise 9 Queries with aggregates (Pt. 1)
+
+In SQL, you can use special functions called aggregate functions to do things like add up numbers or count rows. These help you summarize data from many rows at once.
+
+```text
+SELECT AGG_FUNC(column_or_expression) AS aggregate_description, …
+FROM mytable
+WHERE constraint_expression;
+```
+
+If you don’t group the data, an aggregate function will look at all the rows and give you just one result. Just like with other expressions, using an alias makes the result easier to understand.
+
+| Function                      | Description                                                                                                      |
+| :---------------------------- | :---------------------------------------------------------------------------------------------------------------- |
+| COUNT(*), COUNT(column)       | Counts the number of rows in the group if no column is specified. If a column is given, it counts the rows with non-NULL values in that column. |
+| MIN(column)                   | Finds the smallest numerical value in the specified column for all rows in the group.                            |
+| MAX(column)                   | Finds the largest numerical value in the specified column for all rows in the group.                             |
+| AVG(column)                   | Finds the average numerical value in the specified column for all rows in the group.                            |
+| SUM(column)                   | Finds the sum of all numerical values in the specified column for the rows in the group.                        |
+
+Instead of applying aggregate functions to all rows at once, you can use them to calculate results for smaller groups within the data.
+
+Example:
+If you have a list of sales data for different stores, you can use an aggregate function like SUM() to calculate the total sales for each store individually, rather than for all stores combined.
+
+This would then create as many results as there are unique groups defined as by the GROUP BY clause.
+
+```text
+SELECT AGG_FUNC(column_or_expression) AS aggregate_description, …
+FROM mytable
+WHERE constraint_expression
+GROUP BY column;
+```
+
+The GROUP BY clause works by grouping rows that have the same value in the column specified.
+
+![Desktop View](/assets/img/SQL/SQL-24.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-25.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-26.png){: width="700" height="400" }
+
+### SQL Exercise 9 Queries with aggregates (Pt. 2)
