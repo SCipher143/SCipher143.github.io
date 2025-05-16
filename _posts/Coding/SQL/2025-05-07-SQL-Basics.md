@@ -261,3 +261,39 @@ The GROUP BY clause works by grouping rows that have the same value in the colum
 ![Desktop View](/assets/img/SQL/SQL-26.png){: width="700" height="400" }
 
 ### SQL Exercise 9 Queries with aggregates (Pt. 2)
+
+Our SQL queries are starting to get more advanced, and we’ve covered most of the key parts of a SELECT statement. You might have noticed that the WHERE clause filters rows before they’re grouped with GROUP BY. So how can we filter the results after the grouping happens?
+
+That’s where the HAVING clause comes in. It works alongside GROUP BY and lets you filter the grouped data in your final results.
+
+```text
+SELECT group_by_column, AGG_FUNC(column_expression) AS aggregate_result_alias, …
+FROM mytable
+WHERE condition
+GROUP BY column
+HAVING group_condition;
+```
+
+![Desktop View](/assets/img/SQL/SQL-27.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-28.png){: width="700" height="400" }
+
+## Order of execution of a Query
+
+**SELECT DISTINCT** column, **AGG_FUNC**(column_or_expression), …
+
+**FROM** mytable
+    
+**JOIN** another_table
+      
+**ON** mytable.column = another_table.column
+    
+**WHERE** constraint_expression
+    
+**GROUP** BY column
+
+**HAVING** constraint_expression
+    
+**ORDER BY** column ASC/DESC
+    
+**LIMIT** count OFFSET COUNT;
