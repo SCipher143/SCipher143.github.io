@@ -154,3 +154,49 @@ CREATE TABLE movies (
 ```
 
 ![Desktop View](/assets/img/SQL/SQL-34.png){: width="700" height="400" }
+
+### Exercise 4 Altering tables
+
+As your data changes over time, SQL provides a way for you to update your corresponding tables and database schemas by using the ALTER TABLE statement to add, remove, or modify columns and table constraints.
+
+The syntax for adding a new column is similar to the syntax when creating new rows in the `CREATE TABLE` statement. You need to specify the data type of the column along with any potential table constraints and default values to be applied to both existing and new rows. In some databases like `MySQL`, you can even specify where to insert the new column using the `FIRST` or `AFTER` clauses, though this is not a standard feature.
+
+```text
+ALTER TABLE mytable
+ADD column DataType OptionalTableConstraint 
+    DEFAULT default_value;
+```
+
+#### Removing Columns
+
+Dropping columns is as easy as specifying the column to drop, however, some databases (including SQLite) don't support this feature. Instead you may have to create a new table and migrate the data over.
+
+```text
+ALTER TABLE mytable
+DROP column_to_be_deleted;
+```
+
+#### Renaming the Table
+
+```text
+ALTER TABLE mytable
+RENAME TO new_table_name;
+```
+
+![Desktop View](/assets/img/SQL/SQL-35.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/SQL/SQL-36.png){: width="700" height="400" }
+
+### Exercise 5 Dropping Tables
+
+In some rare cases, you may want to remove an entire table including all of its data and metadata, and to do so, you can use the `DROP TABLE` statement, which differs from the `DELETE` statement in that it also removes the table schema from the database entirely.
+
+```text
+DROP TABLE IF EXISTS mytable;
+```
+
+Like the `CREATE TABLE` statement, the database may throw an error if the specified table does not exist, and to suppress that error, you can use the `IF EXISTS` clause.
+
+In addition, if you have another table that is dependent on columns in table you are removing (for example, with a `FOREIGN KEY` dependency) then you will have to either update all dependent tables first to remove the dependent rows or to remove those tables entirely.
+
+![Desktop View](/assets/img/SQL/SQL-37.png){: width="700" height="400" }
