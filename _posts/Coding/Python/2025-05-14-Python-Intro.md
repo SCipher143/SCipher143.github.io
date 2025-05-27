@@ -39,17 +39,21 @@ This is called syntax highlighting, and it helps make your code easier to read a
 
 ##### Variables
 
+```python
 message = "Hello Python world!"
 
 print(message)
+```
 
 Result = Hello Python world!
 
 We’ve added a variable named message. Every variable is connected to a value, which is the information associated with that variable. In this case the value is the "Hello Python world!" text.
 
+```python
 message = "Hello Python Crash Course world!"
 
 print(message)
+```
 
 You can change the value of a variable in your program at any time, and Python will always keep track of its current value.
 
@@ -143,11 +147,23 @@ You can also strip whitespace from the left side of a string using the lstrip() 
 ❶ >>> favorite_language = ' python '
 
 ❷ >>> favorite_language.rstrip()
+
 ' python'
 
 ❸ >>> favorite_language.lstrip()
+
 'python '
 
 ❹ >>> favorite_language.strip()
+
 'python'
+
+##### Removing Prefixes
+
+When working with strings, another common task is to remove a prefix. Consider a URL with the common prefix https://. We want to remove this prefix, so we can focus on just the part of the URL that users need to enter into an address bar. Here’s how to do that:
+
+```python
+>>> nostarch_url = 'https://nostarch.com'
+>>> nostarch_url.removeprefix('https://')
+```
 
