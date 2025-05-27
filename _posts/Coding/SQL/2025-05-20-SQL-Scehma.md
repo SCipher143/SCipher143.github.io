@@ -153,4 +153,4 @@ CREATE TABLE movies (
 );
 ```
 
-
+![Desktop View](/assets/img/SQL/SQL-34.png){: width="700" height="400" }
