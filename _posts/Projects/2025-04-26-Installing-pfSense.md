@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Installing pfSense"
+title: "Setting Up pfSense: A Step-by-Step Guide"
 date: 2025-04-26 10:19:00 -0700
 categories: [Project Work, Home Lab]
 tags: [HL]
@@ -284,4 +284,4 @@ The `.iso` file along with the `.iso.gz` file that was downloaded to create the 
 
 In the next module, we will set up Kali Linux on the `LAN` interface. This VM will be used to configure and manage pfSense. It will also be used as the attack VM to target the vulnerable systems on the `OPT1 (CYBER_RANGE)`.
 
-- [Next → Installing Kali Linux](/posts/HomeLab-Installing-Kali_Linux)
+- [Next → Installing Kali Linux for Your Lab](/posts/HomeLab-Installing-Kali_Linux)

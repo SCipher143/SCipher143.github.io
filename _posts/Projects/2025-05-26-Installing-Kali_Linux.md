@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Installing Kali Linux"
+title: "Installing Kali Linux for Your Lab"
 date: 2025-05-26 10:19:00 -0700
 categories: [Project Work, Home Lab]
 tags: [HL]
@@ -92,21 +92,49 @@ In the installer menu, select `Graphical Install`.
 
 Choose your language, location, and keyboard layout.
 
+![Desktop View](/assets/img/HomeLab/HL-57.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/HomeLab/HL-58.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/HomeLab/HL-59.png){: width="700" height="400" }
+
 Enter a hostname for the VM (you can change it later), leave the domain name field empty, then continue.
 
+![Desktop View](/assets/img/HomeLab/HL-60.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/HomeLab/HL-61.png){: width="700" height="400" }
+
 Set a username and password. This will be used for logging in.
+
+![Desktop View](/assets/img/HomeLab/HL-62.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/HomeLab/HL-63.png){: width="700" height="400" }
 
 Choose your timezone, then continue.
 
 Select the disk (usually `sda`) and continue.
 
+![Desktop View](/assets/img/HomeLab/HL-65.png){: width="700" height="400" }
+
 Select `Guided - use entire disk`, then continue.
+
+![Desktop View](/assets/img/HomeLab/HL-64.png){: width="700" height="400" }
 
 Choose `All files in one partition` and continue.
 
+![Desktop View](/assets/img/HomeLab/HL-66.png){: width="700" height="400" }
+
 Confirm the partitioning changes and continue.
 
+![Desktop View](/assets/img/HomeLab/HL-67.png){: width="700" height="400" }
+
 Once the base system is installed, choose a desktop environment. `GNOME` is a good choice if you want a visually appealing setup, while `XFCE` is lighter and faster. `KDE Plasma` is more resource-heavy but has more features, so it’s best with at least `2 cores and 4GB of RAM`.
+
+![Desktop View](/assets/img/HomeLab/HL-68.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/HomeLab/HL-69.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/HomeLab/HL-70.png){: width="700" height="400" }
 
 Wait for the installation to finish. Once done, click `Continue` to reboot.
 
@@ -114,11 +142,15 @@ Log In and Final Setup
 
 After rebooting, you’ll see the login screen. Enter the password you set earlier to log in.
 
+![Desktop View](/assets/img/HomeLab/HL-71.png){: width="700" height="400" }
+
 Kali Linux automatically installs Guest Additions when it detects it's running in a VM.
 
 Press `Right Ctrl+F` to switch to Fullscreen mode (and you can press it again to exit fullscreen mode.) You should now see the VM scale to your screen.
 
 Open the Terminal and run `ip a` to check your IP address. The VM should be connected to the LAN and have internet access.
+
+![Desktop View](/assets/img/HomeLab/HL-72.png){: width="700" height="400" }
 
 #### Update Kali Linux
 
@@ -129,6 +161,8 @@ sudo apt update && sudo apt full-upgrade
 ```
 
 When prompted, type `Y` to continue the update.
+
+![Desktop View](/assets/img/HomeLab/HL-73.png){: width="700" height="400" }
 
 After the update, run the command to remove unused packages:
 
@@ -147,4 +181,4 @@ Another fix is to power off the VM and restart it. You may need to restart it 2-
 
 In the next module, we will access the pfSense Web UI and complete the remaining configuration.
 
-- [Next → pfSense Firewall Configuration](/posts/HomeLab-pfSense_Configuration)
+- [Next → Configuring pfSense Firewall for Security](/posts/HomeLab-pfSense_Configuration)
