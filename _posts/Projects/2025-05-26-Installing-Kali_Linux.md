@@ -88,6 +88,8 @@ Select Kali Linux in VirtualBox and click `Start`.
 
 In the installer menu, select `Graphical Install`.
 
+![Desktop View](/assets/img/HomeLab/HL-56.png){: width="700" height="400" }
+
 Choose your language, location, and keyboard layout.
 
 Enter a hostname for the VM (you can change it later), leave the domain name field empty, then continue.
