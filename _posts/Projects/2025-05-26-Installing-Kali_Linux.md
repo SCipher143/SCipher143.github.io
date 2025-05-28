@@ -24,41 +24,65 @@ Name the VM, choose a location to store it, and leave the ISO image option empty
 
 Set `Type` to Linux and `Version` to Debian (64-bit), then click `Next`.
 
-Keep the default settings and click `Next`.
+![Desktop View](/assets/img/HomeLab/HL-45.png){: width="700" height="400" }
+
+Keep the default settings and click `Next` (unles you plan to use the KDE and have the power to do so).
+
+![Desktop View](/assets/img/HomeLab/HL-46.png){: width="700" height="400" }
 
 Set the disk size to `80GB`, then click `Next`.
 
+![Desktop View](/assets/img/HomeLab/HL-47.png){: width="700" height="400" }
+
 Review the settings and click `Finish`.
 
-Organize VMs in Groups
+#### Organize VMs in Groups
 
 Right-click the Kali Linux VM in the sidebar, select `Move to Group`, and choose [New].
 
 Rename the group to `Management`.
 
+![Desktop View](/assets/img/HomeLab/HL-48.png){: width="700" height="400" }
+
 Create another group for your firewall VM (`Ctrl+Click` to select both groups), right-click, and choose `Move to Group` → [`New`].
 
 Rename the new group to `Home Lab`.
+
+![Desktop View](/assets/img/HomeLab/HL-49.png){: width="700" height="400" }
 
 ## Configure Kali Linux VM Settings
 
 Click on the Kali Linux VM and select `Settings` from the toolbar.
 
+![Desktop View](/assets/img/HomeLab/HL-50.png){: width="700" height="400" }
+
 In `System` → `Motherboard`, set the boot order with Hard Disk at the top, followed by `Optical`. Uncheck `Floppy`.
+
+![Desktop View](/assets/img/HomeLab/HL-51.png){: width="700" height="400" }
 
 Under `System` → `Processor`, enable `PAE/NX`.
 
+![Desktop View](/assets/img/HomeLab/HL-54.png){: width="700" height="400" }
+
 In `Display` → `Screen`, increase Video Memory to `128 MB`.
+
+![Desktop View](/assets/img/HomeLab/HL-52.png){: width="700" height="400" }
 
 In `Storage`, click the empty disk under `Controller: IDE`, then select the small disk icon on the right side of the Optical Drive. Choose the downloaded Kali Linux .iso file.
 
-## Network Configuration
+![Desktop View](/assets/img/HomeLab/HL-53.png){: width="700" height="400" }
+
+#### Network Configuration
 
 In `Network` → `Adapter 1`, select Internal Network for Attached to, and set the network name to `LAN 0`. Under Adapter Type, select `Paravirtualized Network (virtio-net)`.
 
+![Desktop View](/assets/img/HomeLab/HL-55.png){: width="700" height="400" }
+
 ## Install Kali Linux
 
+> `Warning`
 Make sure your pfSense VM is running (if previously shut down) before starting the Kali installation.
+{: .prompt-warning }
 
 Select Kali Linux in VirtualBox and click `Start`.
 
@@ -98,23 +122,27 @@ Open the Terminal and run `ip a` to check your IP address. The VM should be conn
 
 Open the Terminal and run the following command to update your system:
 
+```shell
 sudo apt update && sudo apt full-upgrade
+```
 
-When prompted, type Y to continue the update.
+When prompted, type `Y` to continue the update.
 
 After the update, run the command to remove unused packages:
 
+```shell
 sudo apt autoremove
+```
 
-Delete the .iso File
-
-If you don’t plan on using the .iso file again, you can delete it now to free up space.
-
-Troubleshoot Black Screen on Boot
+>Troubleshoot Black Screen on Boot
 
 If you see a black screen after booting Kali Linux, it might be related to a recent update. This issue can appear randomly.
 
 Try changing the "Graphics Controller" to VBoxSVGA in Settings → Display → Screen.
 
 Another fix is to power off the VM and restart it. You may need to restart it 2-3 times for it to work properly.
+{: .prompt-tip }
 
+In the next module, we will access the pfSense Web UI and complete the remaining configuration.
+
+- [Next → pfSense Firewall Configuration](/posts/HomeLab-pfSense_Configuration)

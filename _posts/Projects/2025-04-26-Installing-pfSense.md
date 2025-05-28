@@ -178,6 +178,8 @@ Set the IPv4 address to: `10.0.0.1`
 
 Set the IPv4 subnet bit count to: `24`
 
+![Desktop View](/assets/img/HomeLab/HL-34.png){: width="700" height="400" }
+
 You can skip the gateway configuration by pressing `Enter`, as it's not required for LAN interfaces.
 
 When prompted to configure an IPv6 address using DHCP6, enter `n`, and then press `Enter` again to skip the IPv6 address.
@@ -190,9 +192,15 @@ End: `10.0.0.243`
 
 When asked to switch the webConfigurator protocol to HTTP, enter `n`.
 
+![Desktop View](/assets/img/HomeLab/HL-35.png){: width="700" height="400" }
+
 pfSense will now apply the provided settings. Press `Enter` to complete the `LAN` interface configuration.
 
+![Desktop View](/assets/img/HomeLab/HL-36.png){: width="700" height="400" }
+
 You’ll notice the LAN interface is now set to the static IP you entered.
+
+![Desktop View](/assets/img/HomeLab/HL-37.png){: width="700" height="400" }
 
 #### Configuring OPT1 (vtnet2)
 Press `2` to set interface IP addresses again, then press `3` to choose `OPT1`.
@@ -202,6 +210,8 @@ When prompted about DHCP: enter `n`
 Set the IPv4 address to: `10.6.6.1`
 
 Set the subnet bit count to: `24`
+
+![Desktop View](/assets/img/HomeLab/HL-38.png){: width="700" height="400" }
 
 Skip the gateway by pressing `Enter`.
 
@@ -215,6 +225,8 @@ End: `10.6.6.243`
 
 Decline reverting to HTTP by entering `n`, then press `Enter` to save and return to the main menu.
 
+![Desktop View](/assets/img/HomeLab/HL-39.png){: width="700" height="400" }
+
 #### Configuring OPT2 (vtnet3)
 Repeat the process by pressing `2`, then `4` to configure `OPT2`.
 
@@ -224,11 +236,15 @@ Set the IPv4 address to: `10.80.80.1`
 
 Subnet bit count: `24`
 
+![Desktop View](/assets/img/HomeLab/HL-40.png){: width="700" height="400" }
+
 Skip the gateway and IPv6 steps by pressing `Enter` when prompted.
 
 For the DHCP server, choose `n`, since this interface will be used for the `Active Directory (AD)` lab. The `Domain Controller (DC)` in that setup will handle DHCP, so we’re disabling it on pfSense for `OPT2`.
 
 When prompted about switching to HTTP, again enter `n`, then press `Enter` to return to the main menu.
+
+![Desktop View](/assets/img/HomeLab/HL-41.png){: width="700" height="400" }
 
 The final static IP assignments should be:
 
@@ -237,6 +253,8 @@ LAN: `10.0.0.1`
 OPT1: `10.6.6.1`
 
 OPT2: `10.80.80.1`
+
+![Desktop View](/assets/img/HomeLab/HL-42.png){: width="700" height="400" }
 
 At this stage, the network interfaces in pfSense have been fully set up. Additional configuration will be handled later once `Kali Linux` is installed. We’ll use `Kal`i to access the pfSense Web Interface and continue the setup from there.
 
@@ -250,6 +268,8 @@ Enter a option: `6` (Halt system) Do you want to process?: `y`
 
 This will initiate the shutdown sequence.
 
+![Desktop View](/assets/img/HomeLab/HL-43.png){: width="700" height="400" }
+
 ## Post-Installation Cleanup
 
 After the VM is shut down. Click on Settings from the toolbar.
@@ -258,8 +278,10 @@ Go to the Storage tab. In the Storage Devices section click on the pfSense .iso 
 
 From the dropdown select Remove Disk from Virtual Drive. Click on OK to save the changes and close the configuration menu.
 
-The .iso file along with the .iso.gz file that was downloaded to create the VM can be deleted if you do not want to store them.
+![Desktop View](/assets/img/HomeLab/HL-34.png){: width="700" height="400" }
 
-In the next module, we will set up Kali Linux on the LAN interface. This VM will be used to configure and manage pfSense. It will also be used as the attack VM to target the vulnerable systems on the OPT1 (CYBER_RANGE).
+The `.iso` file along with the `.iso.gz` file that was downloaded to create the VM can be deleted if you do not want to store them.
+
+In the next module, we will set up Kali Linux on the `LAN` interface. This VM will be used to configure and manage pfSense. It will also be used as the attack VM to target the vulnerable systems on the `OPT1 (CYBER_RANGE)`.
 
 - [Next → Installing Kali Linux](/posts/HomeLab-Installing-Kali_Linux)
