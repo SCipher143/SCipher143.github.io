@@ -132,7 +132,7 @@ Once the base system is installed, choose a desktop environment. `GNOME` is a go
 
 ![Desktop View](/assets/img/HomeLab/HL-68.png){: width="700" height="400" }
 
-![Desktop View](/assets/img/HomeLab/HL-69.png){: width="700" height="400" }
+![Desktop View](/assets/img/HomeLab/Hl-69.png){: width="700" height="400" }
 
 ![Desktop View](/assets/img/HomeLab/HL-70.png){: width="700" height="400" }
 
