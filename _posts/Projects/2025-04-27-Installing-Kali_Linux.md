@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Installing Kali Linux for Your Lab"
-date: 2025-05-26 10:19:00 -0700
+date: 2025-04-27 10:19:00 -0700
 categories: [Project Work, Home Lab]
 tags: [HL]
 description: Security and Pentest Home Lab Environment
@@ -169,6 +169,8 @@ After the update, run the command to remove unused packages:
 ```shell
 sudo apt autoremove
 ```
+
+![Desktop View](/assets/img/HomeLab/HL-74.png){: width="700" height="400" }
 
 >Troubleshoot Black Screen on Boot
 

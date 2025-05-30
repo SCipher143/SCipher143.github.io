@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Configuring pfSense Firewall for Security"
-date: 2025-05-27 10:19:00 -0700
+date: 2025-04-28 10:19:00 -0700
 categories: [Project Work, Home Lab]
 tags: [HL]
 description: Security and Pentest Home Lab Environment
@@ -243,3 +243,4 @@ Once pfSense reboots, you’ll be redirected to the login page.
 
 In the next module, we’ll add some vulnerable VMs to the CYBER_RANGE interface and test the connectivity from the Kali Linux VM.
 
+- [Next → Building Your Cyber Range Environment](/posts/HomeLab-Cyber_Range)
