@@ -214,4 +214,4 @@ sudo apt autoremove
 
 In the next module, we will access the pfSense Web UI and complete the remaining configuration.
 
-- \[Next → Configuring pfSense Firewall for Security\](/posts/HomeLab-pfSense_Configuration)
+👉 [Configuring pfSense Firewall for Security](/posts/HomeLab-pfSense_Configuration)
