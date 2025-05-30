@@ -8,239 +8,220 @@ description: Security and Pentest Home Lab Environment
 permalink: /posts/HomeLab-pfSense_Configuration
 ---
 
-**Finishing pfSense Setup**
+## 🔧 Finishing pfSense Setup
 
-In this module, we will complete the pfSense setup and configure firewall rules for the subnets we created in our home lab.
+In this module, we’ll complete the setup of `pfSense` and configure firewall rules for the subnets in your home lab.
 
-# pfSense General Configuration
+---
 
-## Web Portal Setup
+## ⚙️ pfSense General Configuration
 
-On the Kali Linux VM, open the web browser and go to `https://10.0.0.1`.
+### 🌐 Web Portal Setup
 
-You’ll see a warning: "Warning: Potential Security Risk Ahead." This can be ignored because the URL uses HTTPS, which isn’t secure by default. Click `Advanced` and then `Accept the Risk and Continue`.
+1. On the `Kali Linux` VM, open a browser and visit:  
+   `https://10.0.0.1`
+2. Ignore the security warning and click:
+   - `Advanced`
+   - `Accept the Risk and Continue`
+3. Log in to the `pfSense` Web UI using:
+   - Username: `admin`
+   - Password: `pfsense`
+4. Click `Next` through the initial steps.
 
-This will take you to the pfSense Web UI login page. Log in with the default credentials:
+#### 🔧 General Settings
 
-Username: `admin`
+- Set a hostname and domain name for the `pfSense` VM.
+- Uncheck `Override DNS`, then click `Next`.
+- Set your local timezone, then click `Next`.
+- Scroll to the **RFC1918 Networks** section and **uncheck** `Block RFC1918 Private Networks`.  
+  This is required because we’re using a private IP on the WAN interface.
+- Leave other settings as-is, then click `Next`.
+- Set a new `admin` password, store it securely, and click `Reload`.
+- Click `Finish` to access the `pfSense` dashboard.
 
-Password: `pfsense`
+---
 
-Click `Next`, then `Next` again.
+## ✏️ Interface Renaming
 
-General Settings
-In the General Information section, give the pfSense VM a Hostname and Domain Name. This name will help identify the pfSense VM on your network.
+Rename interfaces to make management easier:
 
-Uncheck Override DNS and click `Next`.
+1. Go to `Interfaces` → `OPT1`
+   - Description: `CYBER_RANGE`
+   - Click `Save` → then `Apply Changes`
+2. Go to `Interfaces` → `OPT2`
+   - Description: `AD_LAB`
+   - Click `Save` → then `Apply Changes`
 
-Set your Timezone and click `Next`.
+---
 
-Scroll down and find the RFC1918 Networks section. Uncheck the Block RFC1918 Private Networks option.
+## 🧭 DNS Resolver Configuration
 
-This is necessary because our WAN interface uses a private IP (not a real WAN IP) to communicate with the host system.
+1. Navigate to: `Services` → `DNS Resolver`
+2. Enable all recommended options at the bottom.
+3. Click `Advanced Settings` and enable additional resolver options.
+4. Click `Save` → then `Apply Changes`.
 
-Don’t change anything else on this page. Click `Next`.
+---
 
-Set a new admin password, store it securely, then click Reload to apply the changes.
+## ❌ Disable DHCPv6
 
-Click Finish.
+To prevent IPv6 address assignment on the WAN interface:
 
-Once the onboarding process is complete, you will see the pfSense dashboard.
+1. Go to `Interfaces` → `WAN`
+2. Set `IPv6 Configuration Type` to `None`
+3. Click `Save` → then `Apply Changes`
 
-Interface Renaming
-In the navigation bar, go to Interfaces → OPT1.
+---
 
-In the Description field, enter CYBER_RANGE and click Save.
+## 🔁 Restart pfSense
 
-A popup will appear at the top of the page. Click Apply Changes.
+Restart the VM to ensure settings take effect and the WAN interface receives an IPv4 address.
 
-Now, go to Interfaces → OPT2.
+---
 
-In the Description field, enter AD_LAB and click Save.
+## 🧠 Advanced Configuration
 
-A popup will appear at the top of the page. Click Apply Changes again.
+1. Go to `System` → `Advanced` → `Networking` tab
+2. Under **Network Interfaces**, enable performance optimization
+3. Click `Save` → `OK` to reboot
 
-DNS Resolver Configuration
-From the navigation bar, go to Services → DNS Resolver.
+After reboot, log in with the new `admin` password.
 
-Scroll to the bottom and enable the highlighted options. No need to save yet.
+---
 
-Click on Advanced Settings, scroll down to the Advanced Resolver Options, and enable the highlighted options. Then, scroll to the bottom and click Save.
+## 🌍 Kali Linux Static IP Assignment
 
-A popup will appear at the top of the page. Click Apply Changes.
+1. Go to `Status` → `DHCP Leases`
+2. Find the `Kali Linux` VM → Click the `+` icon to assign a static IP
+3. Set the IP to: `10.0.0.2` → Click `Save` → `Apply Changes`
 
-Disabling DHCPv6
-Some newer versions of pfSense/VirtualBox use IPv6 for dynamic IP assignment. Disable it to prevent IPv6 from being assigned to the WAN interface.
+### 💻 Refresh IP in Kali
 
-Go to Interfaces → WAN and set IPv6 Configuration Type to None.
+In Kali’s terminal:
 
-Scroll down and click Save.
-
-Click Apply Changes when the popup appears.
-
-Restart pfSense
-Restart the pfSense VM to ensure the WAN interface has an IPv4 address.
-
-Advanced Configuration
-From the navigation bar, go to System → Advanced and select the Networking tab.
-
-Scroll down to the Network Interfaces section and enable the highlighted option to improve pfSense performance. Click Save.
-
-A popup will appear; click OK to reboot pfSense.
-
-After reboot, you will be prompted to log in again. Use the new password to access the dashboard.
-
-Kali Linux Static IP Assignment
-From the navigation bar, go to Status → DHCP Leases.
-
-In the Leases section, find the Kali Linux VM and click the + icon to assign a static IP.
-
-Enter 10.0.0.2 in the IP Address field and click Save.
-
-Click Apply Changes when the popup appears.
-
-Refresh Kali Linux IP Address
-Open the terminal on Kali and use the following command to check the current IP address:
-
-css
-Copy
-Edit
+```bash
 ip a l eth0
-To force Kali to release the current IP address and use the static one, run:
+```
 
-arduino
-Copy
-Edit
+## 🔄 Refresh Kali Static IP
+
+To make sure `Kali Linux` uses its static IP:
+
+### 💻 Restart the Network Interface
+
+In Kali’s terminal, run:
+
+```bash
 sudo ip l set eth0 down && sudo ip l set eth0 up
-Afterward, check again with:
+```
 
-css
-Copy
-Edit
+## 💻 Verify Kali Static IP
+
+After restarting the network interface, confirm your Kali VM is using the static IP:
+
+```bash
 ip a l eth0
-pfSense Firewall Configuration
-From the navigation bar, go to Firewall → Rules.
+```
 
-LAN Rules
-Go to the LAN tab, which contains predefined rules.
+# 🔥 pfSense Firewall Configuration
 
-Click Add rule to top to create a new rule.
+## 🔐 LAN Rules
 
-Action: Block
+1. Go to: `Firewall` → `Rules` → `LAN` tab  
+2. Click **Add rule to top**  
+3. Set:  
+   - Action: `Block`  
+   - Address Family: `IPv4+IPv6`  
+   - Protocol: `Any`  
+   - Source: `LAN subnets`  
+   - Destination: `WAN subnets`  
+   - Description: `Block access to WAN services`  
+4. Click **Save** → **Apply Changes**
 
-Address Family: IPv4+IPv6
+---
 
-Protocol: Any
+## 🌐 CYBER_RANGE Rules
 
-Source: LAN subnets
+### 📋 Create RFC1918 Alias
 
-Destination: WAN subnets
+1. Go to: `Firewall` → `Aliases`  
+2. Click **Add** under the IP tab  
+3. Enter:  
+   - Name: `RFC1918`  
+   - Description: `Private IPv4 Address Space`  
+   - Type: `Network(s)`  
+   - Networks:  
+     - `10.0.0.0/8`  
+     - `172.16.0.0/12`  
+     - `192.168.0.0/16`  
+     - `169.254.0.0/16`  
+     - `127.0.0.0/8`  
+4. Click **Save** → **Apply Changes**
 
-Description: Block access to services on WAN interface
+### 🔐 Add Rules for CYBER_RANGE
 
-Scroll down and click Save.
+1. Go to: `Firewall` → `Rules` → `CYBER_RANGE`  
+2. Add these rules in order:
 
-Click Apply Changes in the popup.
+   - ✅ Allow intra-network traffic  
+     - Source: `CYBER_RANGE subnets`  
+     - Destination: `CYBER_RANGE address`  
 
-The final LAN rules should look like the example provided. Make sure the rule order is correct; drag the rules to reorder if needed.
+   - ✅ Allow access to Kali Linux  
+     - Source: `CYBER_RANGE subnets`  
+     - Destination: `10.0.0.2`  
 
-CYBER_RANGE Rules
-Go to Firewall → Aliases.
+   - ✅ Allow traffic to public IPs only  
+     - Source: `CYBER_RANGE subnets`  
+     - Destination: `RFC1918`  
+     - **Enable Invert match**
 
-Click Add under the IP tab to create a new alias:
+   - ❌ Block all other traffic  
+     - Action: `Block`  
+     - Address Family: `IPv4+IPv6`  
+     - Protocol: `Any`  
+     - Source: `CYBER_RANGE subnets`  
 
-Name: RFC1918
+3. Click **Save** after each rule → **Apply Changes**
 
-Description: Private IPv4 Address Space
+---
 
-Type: Network(s)
+## 🧱 AD_LAB Rules
 
-Networks:
+1. Go to: `Firewall` → `Rules` → `AD_LAB`  
+2. Add these rules:
 
-10.0.0.0/8
+   - ❌ Block access to WAN  
+     - Action: `Block`  
+     - Source: `AD_LAB subnets`  
+     - Destination: `WAN subnets`  
 
-172.16.0.0/12
+   - ❌ Block access to CYBER_RANGE  
+     - Action: `Block`  
+     - Source: `AD_LAB subnets`  
+     - Destination: `CYBER_RANGE subnets`  
 
-192.168.0.0/16
+   - ✅ Allow all other traffic  
+     - Source: `AD_LAB subnets`  
+     - Destination: `Any`  
 
-169.254.0.0/16
+3. Click **Save** after each rule → **Apply Changes**
 
-127.0.0.0/8
+---
 
-Click Save, then Apply Changes.
+## 🔁 Reboot pfSense
 
-Now go to Firewall → Rules and select the CYBER_RANGE tab.
+1. Go to: `Diagnostics` → `Reboot`  
+2. Click **Submit**  
+3. After reboot, you’ll be redirected to the login page.
 
-Click Add rule to end to create the following rules:
+---
 
-Allow traffic to all devices on the CYBER_RANGE network:
+## 🧩 What’s Next?
 
-Address Family: IPv4+IPv6
+pfSense is now configured and secured. Next steps:  
 
-Protocol: Any
+- Add more vulnerable VMs to `CYBER_RANGE`  
+- Test connectivity from the Kali Linux VM
 
-Source: CYBER_RANGE subnets
-
-Destination: CYBER_RANGE address
-
-Allow traffic to Kali Linux VM (10.0.0.2):
-
-Source: CYBER_RANGE subnets
-
-Destination: Address or Alias - 10.0.0.2
-
-Allow traffic to non-private IPv4 Addresses:
-
-Source: CYBER_RANGE subnets
-
-Destination: Address or Alias - RFC1918 (Select Invert match)
-
-Block all other traffic:
-
-Action: Block
-
-Address Family: IPv4+IPv6
-
-Protocol: Any
-
-Source: CYBER_RANGE subnets
-
-Click Save after each rule.
-
-AD_LAB Rules
-Select the AD_LAB tab and use Add rule to end for the following rules:
-
-Block access to services on WAN interface:
-
-Action: Block
-
-Source: AD_LAB subnets
-
-Destination: WAN subnets
-
-Block traffic to CYBER_RANGE:
-
-Action: Block
-
-Source: AD_LAB subnets
-
-Destination: CYBER_RANGE subnets
-
-Allow traffic to all other subnets and the internet:
-
-Source: AD_LAB subnets
-
-Destination: Any
-
-Click Save after each rule and then Apply Changes.
-
-pfSense Reboot
-To apply the new firewall rules, go to Diagnostics → Reboot.
-
-Click Submit to reboot pfSense.
-
-Once pfSense reboots, you’ll be redirected to the login page.
-
-In the next module, we’ll add some vulnerable VMs to the CYBER_RANGE interface and test the connectivity from the Kali Linux VM.
-
-- [Next → Building Your Cyber Range Environment](/posts/HomeLab-Cyber_Range)
+👉 - [Next → Building Your Cyber Range Environment](/posts/HomeLab-Cyber_Range)

@@ -144,3 +144,5 @@ The `Paravirtualized Network Adapter` provides better performance, but compatibi
 
 With both `Metasploitable 2` and `Chronos` set up and running inside your virtual lab, you're now ready to start building out your `Active Directory` lab — which we'll walk through in the next post.
 
+
+👉 - [Next → Setting Up Active Directory Lab: Part 1](/posts/HomeLab-Active_Directory1)
