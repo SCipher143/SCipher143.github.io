@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Setting Up a Malware Analysis Lab"
-date: 2025-05-28 08:20:00 -0700
+title: "Installing Tsurugi Linux for DFIR Work"
+date: 2025-05-23 08:25:00 -0700
 categories: [Project Work, Home Lab]
 tags: [HL]
 description: Security and Pentest Home Lab Environment
-permalink: /posts/HomeLab-Malware_Lab
+permalink: /posts/HomeLab-Tsurugi_Linux
 ---
