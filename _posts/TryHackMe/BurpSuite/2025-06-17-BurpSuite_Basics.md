@@ -31,7 +31,7 @@ In short, Burp Suite Professional is a highly potent tool, making it a preferred
 
 Burp Suite Enterprise, in contrast to the community and professional editions, is primarily utilized for continuous scanning. It features an automated scanner that periodically scans web applications for vulnerabilities, similar to how tools like Nessus perform automated infrastructure scanning. Unlike the other editions, which allow manual attacks from a local machine, Burp Suite Enterprise resides on a server and constantly scans the target web applications for potential vulnerabilities.
 
-### Features of Burp Suite
+## Features of Burp Suite
 
 Although Burp Suite Community offers a more limited feature set compared to the Professional edition, it still provides an impressive array of tools that are highly valuable for web application testing. Let's explore some of the key features:
 
@@ -170,7 +170,7 @@ The Target tab in Burp Suite provides more than just control over the scope of o
 
 Overall, the Target tab offers features beyond scoping, allowing us to map out web applications, fine-tune our target scope, and access a comprehensive list of web vulnerabilities for reference purposes.
 
-# Challenge 
+## Challenge 
 
 Take a look around the site on http://10.10.116.223/ — we will be using this a lot throughout the module. Visit every other page that is linked on the homepage, then check your sitemap — one endpoint should stand out as being very unusual!
 
@@ -228,7 +228,7 @@ By completing these steps, we have added the PortSwigger CA certificate to our l
 
 By following these instructions, you can ensure that your browser trusts the PortSwigger CA certificate and securely communicates with TLS-enabled websites through the Burp Suite Proxy.
 
-# Example Atttack
+## Example Atttack
 
  Let's go through a simplified real-world example.
 
