@@ -7,6 +7,8 @@ tags: [THM, Exploits]
 description: Burp Suite from TryHackMe
 ---
 
+![Desktop View](/assets/img/BurpSuite/BurpSuite_img.png){: width="700" height="400" }
+
 # Intro to Burp Suite
 
 In essence, Burp Suite is a Java-based framework designed to serve as a comprehensive solution for conducting web application penetration testing. It has become the industry standard tool for hands-on security assessments of web and mobile applications, including those that rely on application programming interfaces (APIs).

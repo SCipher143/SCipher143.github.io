@@ -7,6 +7,8 @@ tags: [THM, Exploits]
 description: OWASP Top 10-2021 from TryHackMe
 ---
 
+![Desktop View](/assets/img/OWASP/OWASP_img.png){: width="700" height="400" }
+
 ## 1. Broken Access Control
 
 Websites have pages that are protected from regular visitors. For example, only the site's admin user should be able to access a page to manage other users. If a website visitor can access protected pages they are not meant to see, then the access controls are broken.
