@@ -2,8 +2,8 @@
 layout: post
 title: "Metasploit Intro"
 date: 2025-04-26 12:57:00 -0700
-categories: [TryHackMe, Exploits]
-tags: [THM, Exploits]
+categories: [TryHackMe, Exploits, Metasploit]
+tags: [THM, Exploits, Metasploit]
 description: TryHackMe Cyber Security 101 Metasploit
 ---
 # Metasploit Intro
