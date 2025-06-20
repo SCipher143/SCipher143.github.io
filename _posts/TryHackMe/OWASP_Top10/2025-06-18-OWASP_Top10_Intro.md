@@ -324,8 +324,121 @@ For this example, we'll look at a logic flaw within the authentication mechanism
 
 Many times, what happens is that developers forget to sanitise the input(username & password) given by the user in the code of their application, which can make them vulnerable to attacks like SQL injection. However, we will focus on a vulnerability that happens because of a developer's mistake but is very easy to exploit, i.e. re-registration of an existing user.
 
-Let's understand this with the help of an example, say there is an existing user with the name admin, and we want access to their account, so what we can do is try to re-register that username but with slight modification. We will enter " admin" without the quotes (notice the space at the start). Now when you enter that in the username field and enter other required information like email id or password and submit that data, it will register a new user, but that user will have the same right as the admin account. That new user will also be able to see all the content presented under the user admin.
+Let's understand this with the help of an example, say there is an existing user with the name `admin`, and we want access to their account, so what we can do is try to re-register that username but with slight modification. We will enter " admin" without the quotes (notice the space at the start). Now when you enter that in the username field and enter other required information like email id or password and submit that data, it will register a new user, but that user will have the same right as the `admin` account. That new user will also be able to see all the content presented under the user `admin`.
 
 ### Challenge
 
+To see this in action, go to `http://10.10.202.133:8088` and try to register with `darren` as your username. You'll see that the user already exists, so try to register " darren" instead, and you'll see that you are now logged in and can see the content present only in darren's account, which in our case, is the flag that you need to retrieve.
 
+**What is the flag that you found in darren's account?**
+
+![Desktop View](/assets/img/OWASP/33.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/34.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/35.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/36.png){: width="700" height="400" }
+
+**Now try to do the same trick and see if you can log in as arthur.**
+
+**What is the flag that you found in arthur's account?**
+
+![Desktop View](/assets/img/OWASP/37.png){: width="700" height="400" }
+
+## 8. Software nad Data Integrity Failures
+
+**What is Integrity?**
+
+When talking about integrity, we refer to the capacity we have to ascertain that a piece of data remains unmodified. Integrity is essential in cybersecurity as we care about maintaining important data free from unwanted or malicious modifications. For example, say you are downloading the latest installer for an application. How can you be sure that while downloading it, it wasn't modified in transit or somehow got damaged by a transmission error?
+
+To overcome this problem, you will often see a hash sent alongside the file so that you can prove that the file you downloaded kept its integrity and wasn't modified in transit. A hash or digest is simply a number that results from applying a specific algorithm over a piece of data. When reading about hashing algorithms, you will often read about MD5, SHA1, SHA256 or many others available.
+
+### Software Integrity Failures
+
+Suppose you have a website that uses third-party libraries that are stored in some external servers that are out of your control. While this may sound a bit strange, this is actually a somewhat common practice. Take as an example jQuery, a commonly used javascript library. If you want, you can include jQuery in your website directly from their servers without actually downloading it by including the following line in the HTML code of your website:
+
+`<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>`
+When a user navigates to your website, its browser will read its HTML code and download jQuery from the specified external source.
+
+![Desktop View](/assets/img/OWASP/43.png){: width="700" height="400" }
+JS without integrity checks
+
+The problem is that if an attacker somehow hacks into the jQuery official repository, they could change the contents of `https://code.jquery.com/jquery-3.6.1.min.js` to inject malicious code. As a result, anyone visiting your website would now pull the malicious code and execute it into their browsers unknowingly. This is a software integrity failure as your website makes no checks against the third-party library to see if it has changed. Modern browsers allow you to specify a hash along the library's URL so that the library code is executed only if the hash of the downloaded file matches the expected value. This security mechanism is called Subresource Integrity (SRI), and you can read more about it here.
+
+The correct way to insert the library in your HTML code would be to use SRI and include an integrity hash so that if somehow an attacker is able to modify the library, any client navigating through your website won't execute the modified version. Here's how that should look in HTML:
+
+`<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>`
+You can go to `https://www.srihash.org/` to generate hashes for any library if needed.
+
+### Challenge 
+
+![Desktop View](/assets/img/OWASP/38.png){: width="700" height="400" }
+
+### Data Integrity Failures
+
+Let's think of how web applications maintain sessions. Usually, when a user logs into an application, they will be assigned some sort of session token that will need to be saved on the browser for as long as the session lasts. This token will be repeated on each subsequent request so that the web application knows who we are. These session tokens can come in many forms but are usually assigned via cookies. Cookies are key-value pairs that a web application will store on the user's browser and that will be automatically repeated on each request to the website that issued them.
+
+For example, if you were creating a webmail application, you could assign a cookie to each user after logging in that contains their username. In subsequent requests, your browser would always send your username in the cookie so that your web application knows what user is connecting. This would be a terrible idea security-wise because, as we mentioned, cookies are stored on the user's browser, so if the user tampers with the cookie and changes the username, they could potentially impersonate someone else and read their emails! This application would suffer from a data integrity failure, as it trusts data that an attacker can tamper with.
+
+One solution to this is to use some integrity mechanism to guarantee that the cookie hasn't been altered by the user. To avoid re-inventing the wheel, we could use some token implementations that allow you to do this and deal with all of the cryptography to provide proof of integrity without you having to bother with it. One such implementation is **JSON Web Tokens (JWT)**.
+
+JWTs are very simple tokens that allow you to store key-value pairs on a token that provides integrity as part of the token. The idea is that you can generate tokens that you can give your users with the certainty that they won't be able to alter the key-value pairs and pass the integrity check. The structure of a JWT token is formed of 3 parts:
+
+![Desktop View](/assets/img/OWASP/39.png){: width="700" height="400" }
+
+- Header
+- Payload
+- Signature
+
+The header contains metadata indicating this is a JWT, and the signing algorithm in use is HS256. The payload contains the key-value pairs with the data that the web application wants the client to store. The signature is similar to a hash, taken to verify the payload's integrity. If you change the payload, the web application can verify that the signature won't match the payload and know that you tampered with the JWT. Unlike a simple hash, this signature involves the use of a secret key held by the server only, which means that if you change the payload, you won't be able to generate the matching signature unless you know the secret key.
+
+Notice that each of the 3 parts of the token is simply plaintext encoded with base64. You can use this online tool `https://appdevtools.com/base64-encoder-decoder` to encode/decode base64. Try decoding the header and payload of the following token:
+
+`eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Imd1ZXN0IiwiZXhwIjoxNjY1MDc2ODM2fQ.C8Z3gJ7wPgVLvEUonaieJWBJBYt5xOph2CpIhlxqdUw`
+
+Note: The signature contains binary data, so even if you decode it, you won't be able to make much sense of it anyways.
+
+#### JWT and the None Algorithm
+
+A data integrity failure vulnerability was present on some libraries implementing JWTs a while ago. As we have seen, JWT implements a signature to validate the integrity of the payload data. The vulnerable libraries allowed attackers to bypass the signature validation by changing the two following things in a JWT:
+
+1. Modify the header section of the token so that the alg header would contain the value none.
+
+2. Remove the signature part.
+
+Taking the JWT from before as an example, if we wanted to change the payload so that the username becomes "admin" and no signature check is done, we would have to decode the header and payload, modify them as needed, and encode them back. Notice how we removed the signature part but kept the dot at the end.
+
+![Desktop View](/assets/img/OWASP/40.png){: width="700" height="400" }
+
+### Challenge 
+
+Navigate to `http://10.10.202.133:8089/` and follow the instructions in the questions below.
+
+**Try logging into the application as guest. What is guest's account password?**
+
+
+
+---
+
+If your login was successful, you should now have a JWT stored as a cookie in your browser. Press F12 to bring out the Developer Tools.
+
+Depending on your browser, you will be able to edit cookies from the following tabs:
+
+**Firefox**
+
+![Desktop View](/assets/img/OWASP/41.png){: width="700" height="400" }
+
+**Chrome**
+
+![Desktop View](/assets/img/OWASP/42.png){: width="700" height="400" }
+
+**What is the name of the website's cookie containing a JWT token?**
+
+
+
+**Use the knowledge gained in this task to modify the JWT token so that the application thinks you are the user "admin".**
+
+
+
+**What is the flag presented to the admin user?**
