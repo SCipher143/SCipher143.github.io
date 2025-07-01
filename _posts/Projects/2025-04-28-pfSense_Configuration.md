@@ -3,7 +3,7 @@ layout: post
 title: "Configuring pfSense Firewall for Security"
 date: 2025-04-28 10:19:00 -0700
 categories: [Project Work, Home Lab]
-tags: [HL]
+tags: [HomeLab]
 description: Security and Pentest Home Lab Environment
 permalink: /posts/HomeLab-pfSense_Configuration
 ---

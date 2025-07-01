@@ -3,7 +3,7 @@ layout: post
 title: "Setting Up Active Directory Lab: Part 1"
 date: 2025-05-20 08:10:00 -0700
 categories: [Project Work, Home Lab]
-tags: [HL, AD]
+tags: [HomeLab, ActiveDirectory]
 description: Security and Pentest Home Lab Environment
 permalink: /posts/HomeLab-Active_Directory1
 ---
@@ -44,9 +44,9 @@ Microsoft provides **evaluation copies**:
 > Microsoft names ISO files using build numbers. Rename them for clarity.  
 {: .prompt-warning }
 
-| ISO Name | OS Name |
-|----------|---------|
-| `17763.3650...SERVER_EVAL_x64FRE_en-us` | Windows Server 2019 |
+| ISO Name                                         | OS Name               |
+| ------------------------------------------------ | --------------------- |
+| `17763.3650...SERVER_EVAL_x64FRE_en-us`          | Windows Server 2019   |
 | `19045.2006...CLIENTENTERPRISEEVAL_x64FRE_en-us` | Windows 10 Enterprise |
 
 > `Info`  
