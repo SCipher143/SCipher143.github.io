@@ -2,7 +2,7 @@
 layout: post
 title: "Burp Suite: The Basics"
 date: 2025-06-16 12:57:00 -0700
-categories: [TryHackMe, Web Security]
+categories: [TryHackMe, Tools, Web Security]
 tags: [THM, Exploits]
 description: Burp Suite from TryHackMe
 ---
