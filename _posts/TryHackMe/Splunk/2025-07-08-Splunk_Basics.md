@@ -200,9 +200,13 @@ Explore and utilize the right source type for accurate field extraction and log 
 
 ### What is the name associated with IP 107.14.182.38?
 
-
+![Desktop View](/assets/img/Splunk_B/16.png){: width="700" height="400" }
 
 ### What is the number of events that originated from all countries except France?
 
+![Desktop View](/assets/img/Splunk_B/17.png){: width="700" height="400" }
+
 ### How many VPN Events were observed by the IP 107.3.206.58?
+
+![Desktop View](/assets/img/Splunk_B/18.png){: width="700" height="400" }
 
