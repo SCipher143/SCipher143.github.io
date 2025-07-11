@@ -2,7 +2,7 @@
 layout: post
 title: "File Inclusion"
 date: 2025-07-01 09:00:00 -0700
-categories: [TryHackMe, Web Vulnerabilities, File Inclusion]
+categories: [TryHackMe, Web Security, File Inclusion]
 tags: [tryhackme, file inclusion, lfi, rfi, directory traversal, web security]
 description: Learn about file inclusion vulnerabilities in web applications, including Local File Inclusion (LFI), Remote File Inclusion (RFI), and directory traversal. Understand how attackers exploit these flaws and how to defend against them. Based on the TryHackMe File Inclusion room.
 ---
