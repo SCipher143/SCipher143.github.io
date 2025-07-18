@@ -2,7 +2,7 @@
 layout: post
 title: "Splunk: Basics"
 date: 2025-07-08 14:00:00 -0700
-categories: [TryHackMe, Blue Team, SIEM]
+categories: [SOC, Blue Team, SIEM]
 tags: [THM, Splunk, SIEM, Log Analysis, Blue Team, Security Monitoring]
 description: Learn the basics of Splunk, a powerful SIEM tool used for log analysis and threat detection. Explore its core features and functionality through the TryHackMe Splunk 101 room.
 ---
